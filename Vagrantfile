@@ -14,6 +14,17 @@ Vagrant::Config.run do |config|
       chef.add_recipe("swift::default")
       cfg = JSON.parse(File.read("swift-solo/chef/swift.json"))
       cfg.delete("recipes")
+      
+      # Enable SSL
+      cfg["swift"] = {
+        :proxy_server => {
+          :use_ssl => true
+        },
+        :auth_server => {
+          :use_ssl => true
+        }
+      }
+      
       chef.json = cfg
     end
   end
